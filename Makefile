@@ -11,13 +11,13 @@ OBJS    := $(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
 
 CFLAGS = -Wall
 
-LDFLAGS =
+LDFLAGS = -lm
 
 
 all: $(EXCEC)
 
 $(EXCEC) : buildrepo $(OBJS)
-	$(CC) $(OBJS) $(CFLAGS) -o $@
+	$(CC) $(OBJS) $(CFLAGS) $(LDFLAGS) -o $@
 
 $(OBJDIR)/%.o: %.c $(HDRS)
 	$(CC) $(CFLAGS) -c $< -o $@
