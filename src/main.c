@@ -9,18 +9,19 @@
 
 int main(int argc, char** argv)
 {
-    int status;
-    pid_t id;
     char* user_name = read_command("whoami");
     She_l* shell    = CREATE_SHE_L();
     Cmd* temp_command;
+    int running = 1;
 
-    while (1) {
+    while (running) {
         temp_command = CREATE_CMD(user_name);
         temp_command = shell->get_user_input(shell, temp_command);
         shell->run(shell);
+        running = strcmp(temp_command->argv[0], "exit");
         temp_command->destroy(temp_command);
     }
 
+    shell->destroy(shell);
     return 0;
 }

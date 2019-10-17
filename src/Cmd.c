@@ -81,15 +81,11 @@ static char** parse(char* str, int len, int argc, char delim)
             j--;
         }
     }
-    if (delim == '|') {
-        argv[j] = malloc(sizeof(char) * strlen(str));
-        argv[j] = strcpy(argv[j], str);
 
-    } else {
-        argv[j] = malloc(sizeof(char) * (strlen(str)));
-        argv[j] = strcpy(argv[j], str);
+    argv[j] = malloc(sizeof(char) * (strlen(str)));
+    argv[j] = strcpy(argv[j], str);
+    if (PRINT)
         printf("argv[%d]: %s\n", j, argv[j]);
-    }
     if (NULL != argv[argc + 1])
         argv[argc + 1] = NULL;
 
@@ -115,9 +111,7 @@ static char** _prompt(Cmd* this)
     char line[SIZE];
     int argc;
     int line_l;
-    int i;
 
-    i = 0;
     printf("Shell@%s $ ", this->user_tag);
     fgets(line, SIZE, stdin);
     this->delim = check_for_pipe(line);

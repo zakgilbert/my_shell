@@ -1,5 +1,5 @@
 
-EXCEC = prg 
+EXCEC = shel 
 
 SRCDIR  = src 
 OBJDIR  = obj
