@@ -9,8 +9,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include "Cmd_Node.h"
-#include "Hash_t.h"
 #include "Cmd.h"
 
 #define SIZE 100
@@ -65,12 +63,10 @@ static int get_len(char* str, char delim)
 }
 
 /* Return parsed str as argv */
-static char** parse(Hash_t* tab, char* str, int len, int argc, char delim)
+static char** parse(char* str, int len, int argc, char delim)
 {
     char** argv;
-    char* cmd = "/bin/";
     int k, j;
-    Cmd_Node* nodule;
 
     k = len - 1;
     j = argc;
@@ -90,9 +86,9 @@ static char** parse(Hash_t* tab, char* str, int len, int argc, char delim)
         argv[j] = strcpy(argv[j], str);
 
     } else {
-
-        argv[j] = malloc(sizeof(char) * (strlen(str) + strlen(cmd)));
-        argv[j] = strcat(strcpy(argv[j], cmd), str);
+        argv[j] = malloc(sizeof(char) * (strlen(str)));
+        argv[j] = strcpy(argv[j], str);
+        printf("argv[%d]: %s\n", j, argv[j]);
     }
     if (NULL != argv[argc + 1])
         argv[argc + 1] = NULL;
@@ -127,19 +123,18 @@ static char** _prompt(Cmd* this)
     this->delim = check_for_pipe(line);
     argc        = get_argc(line, this->delim);
     line_l      = get_len(line, this->delim);
-    this->argv  = parse(this->tab, line, line_l, argc, this->delim);
+    this->argv  = parse(line, line_l, argc, this->delim);
     this->argc  = argc;
     return this->argv;
 }
 
-Cmd* CREATE_CMD(char* user_tag, Hash_t* tab)
+Cmd* CREATE_CMD(char* user_tag)
 {
     Cmd* this      = malloc(sizeof(*this));
     this->destroy  = _destroy;
     this->prompt   = _prompt;
     this->user_tag = user_tag;
     this->delim    = ' ';
-    this->tab      = tab;
 
     if (PRINT)
         printf("%p\n", this);

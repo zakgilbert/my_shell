@@ -47,7 +47,7 @@ void _run(She_l* this)
         return;
     }
     if ((waitpid(fork(), &status, 0)) == -1) {
-        execv(this->current_comand->argv[0], this->current_comand->argv);
+        execvp(this->current_comand->argv[0], this->current_comand->argv);
     }
 }
 
