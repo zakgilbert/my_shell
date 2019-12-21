@@ -112,7 +112,7 @@ static char** _prompt(Cmd* this)
     int argc;
     int line_l;
 
-    printf("Shell@%s $ ", this->user_tag);
+    printf("🐌 %s $ ", this->user_tag);
     fgets(line, SIZE, stdin);
     this->delim = check_for_pipe(line);
     argc        = get_argc(line, this->delim);

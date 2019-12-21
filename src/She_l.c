@@ -32,7 +32,8 @@ void _run(She_l* this)
     FILE *in, *out;
     char buffer[100];
 
-    printf("current pid: %d\n", getpid());
+    if (PRINT)
+        printf("current pid: %d\n", getpid());
 
     if ((strcmp(this->current_comand->argv[0], "cd")) == 0) {
         chdir(this->current_comand->argv[1]);
@@ -51,10 +52,14 @@ void _run(She_l* this)
         return;
     }
     if ((waitpid(fork(), &status, 0)) == -1) {
-        printf("child pid: %d\n", getpid());
+
+        if (PRINT)
+            printf("child pid: %d\n", getpid());
         execvp(this->current_comand->argv[0], this->current_comand->argv);
         exit(0);
     }
+    if (PRINT)
+        printf("status int: %d, status ptr: %p\n", status, &status);
 }
 
 She_l* CREATE_SHE_L()
