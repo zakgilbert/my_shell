@@ -4,6 +4,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <signal.h>
+
 #include "Cmd.h"
 #include "She_l.h"
 
@@ -21,7 +23,6 @@ int main(int argc, char** argv)
         running = strcmp(temp_command->argv[0], "exit");
         temp_command->destroy(temp_command);
     }
-
     shell->destroy(shell);
     return 0;
 }

@@ -16,26 +16,27 @@
 char* read_command(const char* str)
 {
     FILE* in;
-    char buff[100];
+    char buff[SIZE];
     char* result;
 
     in = popen(str, "r");
-    fgets(buff, 100, in);
+    fgets(buff, SIZE, in);
 
     buff[strlen(buff) - 1] = '\0';
     result                 = malloc(strlen(buff));
     return strcpy(result, buff);
 }
+
 char check_for_pipe(char* str)
 {
-    int i = 0;
-    for (; i < strlen(str); i++) {
-        if (str[i] == '|')
+    while (*(str++)) {
+        if (*(str) == '|')
             return '|';
     }
     return ' ';
 }
-/* Return the number of spaces in input */
+
+/*   */
 static int get_argc(char* input, char delim)
 {
     int argc, i;
@@ -84,8 +85,6 @@ static char** parse(char* str, int len, int argc, char delim)
 
     argv[j] = malloc(sizeof(char) * (strlen(str)));
     argv[j] = strcpy(argv[j], str);
-    if (PRINT)
-        printf("argv[%d]: %s\n", j, argv[j]);
     if (NULL != argv[argc + 1])
         argv[argc + 1] = NULL;
 
@@ -99,8 +98,6 @@ static void _destroy(Cmd* this)
     if (NULL != this) {
         for (i = 0; i < this->argc + 1; i++)
             free(this->argv[i]);
-        if (PRINT)
-            printf("%p\n", this);
         free(this);
     }
 }
@@ -129,9 +126,6 @@ Cmd* CREATE_CMD(char* user_tag)
     this->prompt   = _prompt;
     this->user_tag = user_tag;
     this->delim    = ' ';
-
-    if (PRINT)
-        printf("%p\n", this);
 
     return this;
 }

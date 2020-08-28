@@ -1,8 +1,3 @@
-
-/**
-*  She_l.c
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,20 +15,19 @@ static void _destroy(She_l* this)
         free(this);
     }
 }
+
 Cmd* _get_user_input(She_l* this, Cmd* command)
 {
     this->current_comand = command;
     this->current_comand->prompt(this->current_comand);
     return command;
 }
+
 void _run(She_l* this)
 {
     int status;
     FILE *in, *out;
     char buffer[100];
-
-    if (PRINT)
-        printf("current pid: %d\n", getpid());
 
     if ((strcmp(this->current_comand->argv[0], "cd")) == 0) {
         chdir(this->current_comand->argv[1]);
@@ -52,14 +46,9 @@ void _run(She_l* this)
         return;
     }
     if ((waitpid(fork(), &status, 0)) == -1) {
-
-        if (PRINT)
-            printf("child pid: %d\n", getpid());
         execvp(this->current_comand->argv[0], this->current_comand->argv);
         exit(0);
     }
-    if (PRINT)
-        printf("status int: %d, status ptr: %p\n", status, &status);
 }
 
 She_l* CREATE_SHE_L()
@@ -68,9 +57,6 @@ She_l* CREATE_SHE_L()
     this->destroy        = _destroy;
     this->get_user_input = _get_user_input;
     this->run            = _run;
-
-    if (PRINT)
-        printf("%p\n", this);
 
     return this;
 }

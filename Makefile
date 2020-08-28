@@ -1,5 +1,6 @@
 
 EXCEC = shel 
+CC = gcc
 
 SRCDIR  = src 
 OBJDIR  = obj
